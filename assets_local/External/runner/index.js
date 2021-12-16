@@ -2,6 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 // extract from chromium source code by @liuwayong
+function closeSelf() {
+    parent.window.postMessage("removetheiframe", "*");
+
 (function () {
     'use strict';
     /**
@@ -486,6 +489,7 @@
                 this.playing = true;
                 this.activated = true;
             } else if (this.crashed) {
+                closeSelf();
                 this.restart();
             }
         },
@@ -689,7 +693,9 @@
 
                 if (this.crashed && e.type == Runner.events.TOUCHSTART &&
                     e.currentTarget == this.containerEl) {
-                    this.restart();
+                        closeSelf();
+                        this.restart();
+                    
                 }
             }
 
@@ -728,7 +734,8 @@
                 if (Runner.keycodes.RESTART[keyCode] || this.isLeftClickOnCanvas(e) ||
                     (deltaTime >= this.config.GAMEOVER_CLEAR_TIME &&
                         Runner.keycodes.JUMP[keyCode])) {
-                    this.restart();
+                            closeSelf();
+                            this.restart();
                 }
             } else if (this.paused && isjumpKey) {
                 // Reset the jump state
